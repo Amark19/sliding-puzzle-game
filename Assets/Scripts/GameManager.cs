@@ -11,7 +11,7 @@ public class GameManager : MonoBehaviour {
   private int emptyLocation;
   public int size;
   int puzzleSize;
-  public Texture2D originalImage;
+  public static Texture2D originalImage;
   private bool shuffling = false;
 
   // Create the game setup with size x size pieces.
@@ -49,7 +49,8 @@ public class GameManager : MonoBehaviour {
     pieces = new List<Transform>();
     puzzleSize = originalImage.width / (size);
     CreateGamePieces(0.01f);
-    // StartCoroutine(WaitShuffle(0.01f));
+    StartCoroutine(WaitShuffle(0.01f));
+    gameTransform.gameObject.SetActive(false);
   }
 
 
