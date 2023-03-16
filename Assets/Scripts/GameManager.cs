@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour {
   [SerializeField] private Transform gameTransform;
@@ -12,7 +13,10 @@ public class GameManager : MonoBehaviour {
   public int size;
   int puzzleSize;
   public static Texture2D originalImage;
+  public Texture2D img_scan;
+  public bool isImageScan;
   private bool shuffling = false;
+  public GameObject next;
 
   // Create the game setup with size x size pieces.
   private void CreateGamePieces(float gapThickness) {
@@ -47,17 +51,34 @@ public class GameManager : MonoBehaviour {
   // Start is called before the first frame update
   void Start() {
     pieces = new List<Transform>();
+    if (isImageScan) {
+      originalImage = img_scan;
+    }
     puzzleSize = originalImage.width / (size);
     CreateGamePieces(0.01f);
     StartCoroutine(WaitShuffle(0.01f));
     gameTransform.gameObject.SetActive(false);
   }
 
+  public void increase_difficulty() {
+    next.SetActive(false);
+    size = size + 1;
+    puzzleSize = originalImage.width / (size);
+    CreateGamePieces(0.01f);
+    StartCoroutine(WaitShuffle(0.01f));
+  }
 
   void Update() {
+    if (Input.GetKey(KeyCode.Escape))
+      {
+          // Insert Code Here (I.E. Load Scene, Etc)
+          // OR Application.Quit();
+          SceneManager.LoadScene("home");
+          return;
+      }
     // Check for completion.
     if (CheckCompletion()) {
-      //
+      next.SetActive(true);
     }
 
     // On click send out ray to see if we click a piece.

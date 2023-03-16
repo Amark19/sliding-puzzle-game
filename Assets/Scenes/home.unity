@@ -370,6 +370,7 @@ GameObject:
   - component: {fileID: 899109898}
   - component: {fileID: 899109897}
   - component: {fileID: 899109896}
+  - component: {fileID: 899109900}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -461,6 +462,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &899109900
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 899109895}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac3d0fed3ecb8be489a93ca5c7d83f57, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1210613401
 GameObject:
   m_ObjectHideFlags: 0
@@ -637,7 +650,6 @@ GameObject:
   - component: {fileID: 1919167298}
   - component: {fileID: 1919167297}
   - component: {fileID: 1919167296}
-  - component: {fileID: 1919167299}
   m_Layer: 5
   m_Name: customImagePlacement
   m_TagString: Untagged
@@ -710,7 +722,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1919167299}
+      - m_Target: {fileID: 899109900}
         m_TargetAssemblyTypeName: filePickerSystem, Assembly-CSharp
         m_MethodName: LoadFile
         m_Mode: 1
@@ -760,19 +772,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1919167294}
   m_CullTransparentMesh: 1
---- !u!114 &1919167299
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1919167294}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ac3d0fed3ecb8be489a93ca5c7d83f57, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  path: 
 --- !u!1 &1970577767
 GameObject:
   m_ObjectHideFlags: 0
@@ -856,7 +855,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1970577770}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 899109900}
+        m_TargetAssemblyTypeName: filePickerSystem, Assembly-CSharp
+        m_MethodName: goToImgScan
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1970577770
 MonoBehaviour:
   m_ObjectHideFlags: 0

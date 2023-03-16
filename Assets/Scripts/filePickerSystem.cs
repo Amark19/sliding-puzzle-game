@@ -6,8 +6,6 @@ using UnityEngine.SceneManagement;
 
 public class filePickerSystem : MonoBehaviour
 {
-   public string path;
-
    public void LoadFile(){
         string filetype = NativeFilePicker.ConvertExtensionToFileType("png");
 
@@ -21,8 +19,12 @@ public class filePickerSystem : MonoBehaviour
                 Texture2D texture = new Texture2D(2, 2);
                 texture.LoadImage(bytes);
                 GameManager.originalImage = texture;
-                SceneManager.LoadScene("puzzle");
+                SceneManager.LoadScene("puzzle_place");
             }
         }, new string[] { filetype });
+   }
+
+   public void goToImgScan(){
+       SceneManager.LoadScene("puzzle_imgScan");
    }
 }
