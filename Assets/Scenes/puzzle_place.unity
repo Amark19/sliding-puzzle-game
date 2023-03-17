@@ -1025,7 +1025,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameTransform: {fileID: 1687226289}
   piecePrefab: {fileID: 3998099537845350065, guid: 70be97b84da71b446b68e6e560269c37, type: 3}
-  size: 3
+  size: 2
   img_scan: {fileID: 0}
   isImageScan: 0
   next: {fileID: 553617937}

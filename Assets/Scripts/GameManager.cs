@@ -39,7 +39,7 @@ public class GameManager : MonoBehaviour {
         } 
         else {
           Texture2D puzzlePiece = new Texture2D(puzzleSize,puzzleSize);
-          Color[] pixels = originalImage.GetPixels(row * puzzleSize, col * puzzleSize, puzzleSize, puzzleSize);
+          Color[] pixels = originalImage.GetPixels(col * puzzleSize, ((size-1)*puzzleSize) - (row * puzzleSize), puzzleSize, puzzleSize);
           puzzlePiece.SetPixels(pixels);
           puzzlePiece.Apply();
           piece.GetComponent<Renderer>().material.mainTexture = puzzlePiece;
@@ -56,29 +56,40 @@ public class GameManager : MonoBehaviour {
     }
     puzzleSize = originalImage.width / (size);
     CreateGamePieces(0.01f);
-    StartCoroutine(WaitShuffle(0.01f));
-    gameTransform.gameObject.SetActive(false);
+    StartCoroutine(WaitShuffle(0.05f));
+    // gameTransform.gameObject.SetActive(false);
   }
 
   public void increase_difficulty() {
-    next.SetActive(false);
+    shuffling = false;
+    destroy_pieces();
     size = size + 1;
     puzzleSize = originalImage.width / (size);
+    pieces = new List<Transform>();
     CreateGamePieces(0.01f);
     StartCoroutine(WaitShuffle(0.01f));
+    next.SetActive(false);
+  }
+
+  void destroy_pieces() {
+    foreach (Transform child in gameTransform) {
+      Destroy(child.gameObject);
+    }
   }
 
   void Update() {
     if (Input.GetKey(KeyCode.Escape))
       {
-          // Insert Code Here (I.E. Load Scene, Etc)
-          // OR Application.Quit();
           SceneManager.LoadScene("home");
           return;
       }
     // Check for completion.
-    if (CheckCompletion()) {
+    if (CheckCompletion() && shuffling) {
       next.SetActive(true);
+    }
+    else{
+      next.SetActive(false);
+
     }
 
     // On click send out ray to see if we click a piece.
@@ -89,7 +100,6 @@ public class GameManager : MonoBehaviour {
     if(Physics.Raycast(ray, out hit)){
         // Go through the list, the index tells us the position.
         for (int i = 0; i < pieces.Count; i++) {
-          Debug.Log(hit.transform.gameObject.name);
           if (pieces[i].name == hit.transform.gameObject.name) {
             // Check each direction to see if valid move.
             // We break out on success so we don't carry on and swap back again.
@@ -130,7 +140,7 @@ public class GameManager : MonoBehaviour {
   private IEnumerator WaitShuffle(float duration) {
     yield return new WaitForSeconds(duration);
     Shuffle();
-    shuffling = false;
+    shuffling = true;
   }
 
   // Brute force shuffling.
