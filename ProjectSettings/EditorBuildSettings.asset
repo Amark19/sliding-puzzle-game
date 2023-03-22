@@ -10,7 +10,10 @@ EditorBuildSettings:
     guid: fbc6df6d7cd31aa4c96d59a41bb0e228
   - enabled: 1
     path: Assets/Scenes/puzzle_place.unity
-    guid: 84d0e298f8bf45040b0a03e91fa65688
+    guid: a1406fa161294394781e28db950c7fc1
+  - enabled: 1
+    path: Assets/Scenes/puzzle_inbuilt.unity
+    guid: 9da136103b4d2544cb4f50052586073c
   - enabled: 1
     path: Assets/Scenes/puzzle_imgScan.unity
     guid: ba256024b51a46b43afb2ca16cb97f46

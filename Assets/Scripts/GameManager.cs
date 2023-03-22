@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour {
@@ -16,10 +17,9 @@ public class GameManager : MonoBehaviour {
   public Texture2D img_scan;
   public bool isImageScan;
   private bool shuffling = false;
-  public GameObject next;
 
-  // Create the game setup with size x size pieces.
-  private void CreateGamePieces(float gapThickness) {
+    // Create the game setup with size x size pieces.
+    private void CreateGamePieces(float gapThickness) {
     // This is the width of each tile.
     float width = 1 / (float)size;
     for (int row = 0; row < size; row++) {
@@ -54,22 +54,37 @@ public class GameManager : MonoBehaviour {
     if (isImageScan) {
       originalImage = img_scan;
     }
+    if (originalImage.width != originalImage.height) {
+            this.GetComponent<UIHandler>().showError();
+    }
+    else{
     puzzleSize = originalImage.width / (size);
     CreateGamePieces(0.01f);
     StartCoroutine(WaitShuffle(0.05f));
-    // gameTransform.gameObject.SetActive(false);
-  }
+     while (!CheckCompletion())
+            {
+            StartCoroutine(WaitShuffle(0.01f));
+            }
+    }
+    if(!CheckCompletion())
+        {
 
-  public void increase_difficulty() {
+        shuffling = true;
+        }
+    }
+
+    public void increase_difficulty() {
+        this.GetComponent<UIHandler>().closeNextPanel();
     shuffling = false;
     destroy_pieces();
     size = size + 1;
     puzzleSize = originalImage.width / (size);
     pieces = new List<Transform>();
+    gameTransform.gameObject.SetActive(true);
     CreateGamePieces(0.01f);
-    StartCoroutine(WaitShuffle(0.01f));
-    next.SetActive(false);
-  }
+    StartCoroutine(WaitShuffle(0.05f));
+        shuffling = true;
+    }
 
   void destroy_pieces() {
     foreach (Transform child in gameTransform) {
@@ -78,19 +93,15 @@ public class GameManager : MonoBehaviour {
   }
 
   void Update() {
-    if (Input.GetKey(KeyCode.Escape))
-      {
-          SceneManager.LoadScene("home");
-          return;
-      }
     // Check for completion.
     if (CheckCompletion() && shuffling) {
-      next.SetActive(true);
+            Debug.Log("completed");
+            this.GetComponent<UIHandler>().showNextPanel(size);
+            StartCoroutine(wait());
     }
     else{
-      next.SetActive(false);
-
-    }
+            this.GetComponent<UIHandler>().closeNextPanel();
+        }
 
     // On click send out ray to see if we click a piece.
     if (Input.GetMouseButtonDown(0)) {
@@ -112,6 +123,12 @@ public class GameManager : MonoBehaviour {
       }
     }
   }
+
+  IEnumerator wait() {
+        yield return new WaitForSeconds(2f);
+
+        gameTransform.gameObject.SetActive(false);
+    }
 
   // colCheck is used to stop horizontal moves wrapping.
   private bool SwapIfValid(int i, int offset, int colCheck) {
@@ -140,7 +157,6 @@ public class GameManager : MonoBehaviour {
   private IEnumerator WaitShuffle(float duration) {
     yield return new WaitForSeconds(duration);
     Shuffle();
-    shuffling = true;
   }
 
   // Brute force shuffling.
