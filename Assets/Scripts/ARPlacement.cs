@@ -12,6 +12,8 @@ public class ARPlacement : MonoBehaviour
     private GameObject spawnedObject;
     private Pose PlacementPose;
     private ARRaycastManager aRRaycastManager;
+    public GameObject HelperOverlay;
+    public GameObject refBtn;
     private bool placementPoseIsValid = false;
 
     void Start()
@@ -72,6 +74,8 @@ foreach (var plane in planeManager.trackables)
 
         this.GetComponent<ARPlaneManager>().enabled=false;
         this.GetComponent<ARPlane>().enabled=false;
+        HelperOverlay.SetActive(false);
+        refBtn.SetActive(true);
         
     }
 
