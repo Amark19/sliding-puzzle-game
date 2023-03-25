@@ -64,14 +64,14 @@ public class ARPlacement : MonoBehaviour
     void ARPlaceObject()
     {
         arObjectToSpawn.SetActive(true);
-        arObjectToSpawn.transform.SetPositionAndRotation(new Vector3(PlacementPose.position.x,PlacementPose.position.y + 1f,PlacementPose.position.z), PlacementPose.rotation);
+        spawnedObject = arObjectToSpawn;
+        arObjectToSpawn.transform.SetPositionAndRotation(new Vector3(PlacementPose.position.x,PlacementPose.position.y + .5f,PlacementPose.position.z), PlacementPose.rotation);
         placementIndicator.SetActive(false);
         var planeManager = this.GetComponent<ARPlaneManager>();
-foreach (var plane in planeManager.trackables)
-{
-    plane.gameObject.SetActive(false);
-}
-
+        foreach (var plane in planeManager.trackables)
+        {
+            plane.gameObject.SetActive(false);
+        }
         this.GetComponent<ARPlaneManager>().enabled=false;
         this.GetComponent<ARPlane>().enabled=false;
         HelperOverlay.SetActive(false);

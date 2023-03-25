@@ -55,36 +55,32 @@ public class GameManager : MonoBehaviour {
       originalImage = img_scan;
     }
     if (originalImage.width != originalImage.height) {
-            this.GetComponent<UIHandler>().showError();
+      this.GetComponent<UIHandler>().showError();
     }
     else{
-    puzzleSize = originalImage.width / (size);
-    CreateGamePieces(0.01f);
-    StartCoroutine(WaitShuffle(0.05f));
-     while (!CheckCompletion())
-            {
-            StartCoroutine(WaitShuffle(0.01f));
-            }
+      puzzleSize = originalImage.width / (size);
+      CreateGamePieces(0.01f);
+      Shuffle();
+      while (CheckCompletion()){
+        Shuffle();
+      }
+      shuffling = true;
     }
-    if(!CheckCompletion())
-        {
+  }
 
-        shuffling = true;
-        }
-    }
-
-    public void increase_difficulty() {
-        this.GetComponent<UIHandler>().closeNextPanel();
+  public void increase_difficulty() {
     shuffling = false;
+    Debug.Log("increase difficulty");
+    this.GetComponent<UIHandler>().closeNextPanel();
     destroy_pieces();
     size = size + 1;
     puzzleSize = originalImage.width / (size);
     pieces = new List<Transform>();
     gameTransform.gameObject.SetActive(true);
     CreateGamePieces(0.01f);
-    StartCoroutine(WaitShuffle(0.05f));
-        shuffling = true;
-    }
+    Shuffle();
+    shuffling = true;
+  }
 
   void destroy_pieces() {
     foreach (Transform child in gameTransform) {
@@ -95,13 +91,12 @@ public class GameManager : MonoBehaviour {
   void Update() {
     // Check for completion.
     if (CheckCompletion() && shuffling) {
-            Debug.Log("completed");
-            this.GetComponent<UIHandler>().showNextPanel(size);
-            StartCoroutine(wait());
+      Debug.Log("completed");
+      this.GetComponent<UIHandler>().showNextPanel(size);
     }
-    else{
-            this.GetComponent<UIHandler>().closeNextPanel();
-        }
+    // else{
+    //   this.GetComponent<UIHandler>().closeNextPanel();
+    // }
 
     // On click send out ray to see if we click a piece.
     if (Input.GetMouseButtonDown(0)) {
@@ -124,12 +119,6 @@ public class GameManager : MonoBehaviour {
     }
   }
 
-  IEnumerator wait() {
-        yield return new WaitForSeconds(2f);
-
-        gameTransform.gameObject.SetActive(false);
-    }
-
   // colCheck is used to stop horizontal moves wrapping.
   private bool SwapIfValid(int i, int offset, int colCheck) {
     if (((i % size) != colCheck) && ((i + offset) == emptyLocation)) {
@@ -142,6 +131,11 @@ public class GameManager : MonoBehaviour {
       return true;
     }
     return false;
+  }
+
+  IEnumerator wait(float duration) {
+    yield return new WaitForSeconds(duration);
+    this.GetComponent<UIHandler>().showNextPanel(size);
   }
 
   // We name the pieces in order so we can use this to check completion.
@@ -180,6 +174,7 @@ public class GameManager : MonoBehaviour {
         count++;
       }
     }
+    Debug.Log("finish " + CheckCompletion());
   }
 }
 

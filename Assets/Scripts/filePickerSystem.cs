@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 public class filePickerSystem : MonoBehaviour
 {
    public void LoadFile(){
-        string filetype = NativeFilePicker.ConvertExtensionToFileType("image/*");
+        string filetype = "";
 
         NativeFilePicker.Permission permission = NativeFilePicker.PickFile((path) => {
             Debug.Log("Picked file: " + path);
@@ -21,7 +21,7 @@ public class filePickerSystem : MonoBehaviour
                 GameManager.originalImage = texture;
                 SceneManager.LoadScene("puzzle_place");
             }
-        }, new string[] { filetype });
+        }, "image/*");
    }
 
 }

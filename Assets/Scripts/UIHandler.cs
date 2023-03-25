@@ -9,6 +9,7 @@ public class UIHandler : MonoBehaviour
     public GameObject errorCard;
     public GameObject refImgPanel;
     public GameObject completePanel;
+    public GameObject refBtn;
     public Text puzzle_size;
 
     public void showError()
@@ -47,11 +48,13 @@ public class UIHandler : MonoBehaviour
         Debug.Log(size);
         puzzle_size.text = $"{size}x{size} puzzle";
         completePanel.SetActive(true);
+        refBtn.SetActive(false);
     }
 
     public void closeNextPanel()
     {
         completePanel.SetActive(false);
+        refBtn.SetActive(true);
     }
 
     void Update()
