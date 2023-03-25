@@ -28,13 +28,10 @@ public class ARPlacement : MonoBehaviour
         {
             ARPlaceObject();
         }
-
-
         UpdatePlacementPose();
         UpdatePlacementIndicator();
-
-
     }
+    
     void UpdatePlacementIndicator()
     {
         if(spawnedObject == null && placementPoseIsValid)
