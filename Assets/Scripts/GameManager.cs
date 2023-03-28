@@ -12,7 +12,8 @@ public class GameManager : MonoBehaviour {
   private List<Transform> pieces;
   private int emptyLocation;
   public int size;
-  int puzzleSize;
+  int puzzleSize_width;
+  int puzzleSize_height;
   public static Texture2D originalImage;
   public Texture2D img_scan;
   public bool isImageScan;
@@ -38,8 +39,8 @@ public class GameManager : MonoBehaviour {
           piece.gameObject.SetActive(false);
         } 
         else {
-          Texture2D puzzlePiece = new Texture2D(puzzleSize,puzzleSize);
-          Color[] pixels = originalImage.GetPixels(col * puzzleSize, ((size-1)*puzzleSize) - (row * puzzleSize), puzzleSize, puzzleSize);
+          Texture2D puzzlePiece = new Texture2D(puzzleSize_width,puzzleSize_height);
+          Color[] pixels = originalImage.GetPixels(col * puzzleSize_width, ((size-1)*puzzleSize_height) - (row * puzzleSize_height), puzzleSize_width, puzzleSize_height);
           puzzlePiece.SetPixels(pixels);
           puzzlePiece.Apply();
           piece.GetComponent<Renderer>().material.mainTexture = puzzlePiece;
@@ -54,18 +55,14 @@ public class GameManager : MonoBehaviour {
     if (isImageScan) {
       originalImage = img_scan;
     }
-    if (originalImage.width != originalImage.height) {
-      this.GetComponent<UIHandler>().showError();
-    }
-    else{
-      puzzleSize = originalImage.width / (size);
-      CreateGamePieces(0.01f);
+    puzzleSize_width = originalImage.width / (size);
+    puzzleSize_height = originalImage.height / (size);
+    CreateGamePieces(0.01f);
+    Shuffle();
+    while (CheckCompletion()){
       Shuffle();
-      while (CheckCompletion()){
-        Shuffle();
-      }
-      shuffling = true;
     }
+      shuffling = true;
   }
 
   public void increase_difficulty() {
@@ -74,7 +71,8 @@ public class GameManager : MonoBehaviour {
     this.GetComponent<UIHandler>().closeNextPanel();
     destroy_pieces();
     size = size + 1;
-    puzzleSize = originalImage.width / (size);
+    puzzleSize_width = originalImage.width / (size);
+    puzzleSize_height = originalImage.height / (size);
     pieces = new List<Transform>();
     gameTransform.gameObject.SetActive(true);
     CreateGamePieces(0.01f);
@@ -146,11 +144,6 @@ public class GameManager : MonoBehaviour {
       }
     }
     return true;
-  }
-
-  private IEnumerator WaitShuffle(float duration) {
-    yield return new WaitForSeconds(duration);
-    Shuffle();
   }
 
   // Brute force shuffling.
